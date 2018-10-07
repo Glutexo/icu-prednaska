@@ -7,4 +7,4 @@ Cílem přednášky je ukázat, co všechno může vývojáře potkat, když se 
 Pro cílovou skupinu konference jsou příklady kódu v [PHP 7].
 
 [Developer Day 2018]: https://www.hubbr.cz/udalosti/events/developer-day-2018
-[PHP]: https://www.php.net/
+[PHP 7]: https://www.php.net/
