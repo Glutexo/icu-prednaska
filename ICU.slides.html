@@ -11905,10 +11905,142 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="ICU-/-CLDR-/-intl">ICU / CLDR / intl<a class="anchor-link" href="#ICU-/-CLDR-/-intl">&#182;</a></h1>
+<h1 id="ICU-/-intl">ICU / intl<a class="anchor-link" href="#ICU-/-intl">&#182;</a></h1>
 </div>
 </div>
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    yield [&#39;Blabla&#39;, &#39;💩&#39;];</span>
+<span class="x">}, $locales);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[103]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-blue-fg">cs_CZ</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">Blabla: 💩</span>&#34;,
+  ],
+  &#34;<span class="ansi-blue-fg">ja_JP</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">Blabla: 💩</span>&#34;,
+  ],
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div><aside class="notes">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">function canonicalize ($item) {</span>
+<span class="x">    if (is_array($item)) {</span>
+<span class="x">        return implode(&#39;, &#39;, $item);</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    if (is_null($item)) {</span>
+<span class="x">        return &#39;null&#39;;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    if (is_bool($item)) {</span>
+<span class="x">        return $item ? &#39;true&#39; : &#39;false&#39;;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    if (is_int($item) || is_float($item)) {</span>
+<span class="x">        return &quot;{$item}&quot;;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    if (is_string($item)) {</span>
+<span class="x">        return $item;</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    return &quot;&quot;;</span>
+<span class="x">}</span>
+
+<span class="x">function single_out(callable $function, ...$args) {</span>
+<span class="x">    $out = [];</span>
+<span class="x">    foreach ($function(...$args) as $item) {</span>
+<span class="x">        if (is_null($item[0])) {</span>
+<span class="x">            $out[] = canonicalize($item[1]);</span>
+<span class="x">            continue;</span>
+<span class="x">        }</span>
+<span class="x">        </span>
+<span class="x">        $key = canonicalize($item[0]);</span>
+<span class="x">        $value = canonicalize($item[1]);</span>
+<span class="x">        $out[] = &quot;{$key}: {$value}&quot;;</span>
+<span class="x">    }</span>
+<span class="x">    return $out;</span>
+<span class="x">}</span>
+
+<span class="x">function out (callable $function, ?array $locales = null) {</span>
+<span class="x">    if (is_null($locales)) {</span>
+<span class="x">        return single_out($function);</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    $out = [];</span>
+<span class="x">    foreach ($locales as $locale) {</span>
+<span class="x">        $out[$locale] = single_out($function, $locale);</span>
+<span class="x">    }</span>
+<span class="x">    </span>
+<span class="x">    return $out;</span>
+<span class="x">}</span>
+
+<span class="x">$locales = [&#39;cs_CZ&#39;, &#39;ja_JP&#39;];</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-green-fg">cs_CZ</span>&#34;,
+  &#34;<span class="ansi-green-fg">ja_JP</span>&#34;,
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+</aside><aside class="notes">
 
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
@@ -11938,10 +12070,24 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="P&#345;&#237;klady">P&#345;&#237;klady<a class="anchor-link" href="#P&#345;&#237;klady">&#182;</a></h2><ul>
+<h3 id="P&#345;&#237;klady">P&#345;&#237;klady<a class="anchor-link" href="#P&#345;&#237;klady">&#182;</a></h3><ul>
 <li>Nejhorší: Kvůli rozdílu v nastavení oddělovačů tisíců nepůjde odeslat formulář s částkou.</li>
 <li>Nepříjemné: Nadpisy článků, které nejsou latinkou, vytvoří nesrozumitelné adresy: <em>------</em> místo <em>privet</em>.</li>
 <li>Kosmetické: Datum se zobrazí s jiným pořadím jednotlivých součástí.</li>
+</ul>
+
+</div>
+</div>
+</div>
+</aside><aside class="notes">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Co-u&#382;-jsem-sly&#353;el">Co u&#382; jsem sly&#353;el<a class="anchor-link" href="#Co-u&#382;-jsem-sly&#353;el">&#182;</a></h3><ul>
+<li>Sestavujte věty tak, aby nebylo potřeba měnit tvary slov.</li>
+<li>Nemůžeme ty ruské e-maily posílat napsané latinkou?</li>
 </ul>
 
 </div>
@@ -11952,18 +12098,23 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Collator">Collator<a class="anchor-link" href="#Collator">&#182;</a></h2>
+<h2 id="IntlDateFormatter">IntlDateFormatter<a class="anchor-link" href="#IntlDateFormatter">&#182;</a></h2>
 </div>
 </div>
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-PHP"><pre><span></span><span class="x">$birds = [&#39;chřástal&#39;, &#39;čížek&#39;, &#39;ťuhýk&#39;, &#39;datel&#39;, &#39;čáp&#39;, &#39;turpan&#39;, &#39;cetie&#39;];</span>
-<span class="x">sort($birds);</span>
-<span class="x">$birds;</span>
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $dateFormat = IntlDateFormatter::LONG;</span>
+<span class="x">    $timeFormat = IntlDateFormatter::LONG;</span>
+<span class="x">    $timeZone = new DateTimeZone(&#39;Europe/Prague&#39;);</span>
+<span class="x">    $formatter = new IntlDateFormatter(&#39;cs_CZ&#39;, $dateFormat, $timeFormat, $timeZone);</span>
+<span class="x">    $dateTime = new DateTime;</span>
+<span class="x">    yield [null, $formatter-&gt;format($dateTime)];</span>
+<span class="x">}, $locales);</span>
 </pre></div>
 
 </div>
@@ -11976,20 +12127,74 @@ a.anchor-link {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[1]:</div>
+<div class="prompt output_prompt">Out[2]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
 <pre>[
-  &#34;<span class="ansi-green-fg">cetie</span>&#34;,
-  &#34;<span class="ansi-green-fg">chřástal</span>&#34;,
-  &#34;<span class="ansi-green-fg">datel</span>&#34;,
-  &#34;<span class="ansi-green-fg">turpan</span>&#34;,
-  &#34;<span class="ansi-green-fg">čáp</span>&#34;,
-  &#34;<span class="ansi-green-fg">čížek</span>&#34;,
-  &#34;<span class="ansi-green-fg">ťuhýk</span>&#34;,
+  &#34;<span class="ansi-blue-fg">cs_CZ</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">20. října 2018 5:50:08 SELČ</span>&#34;,
+  ],
+  &#34;<span class="ansi-blue-fg">ja_JP</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">20. října 2018 5:50:08 SELČ</span>&#34;,
+  ],
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="NumberFormatter">NumberFormatter<a class="anchor-link" href="#NumberFormatter">&#182;</a></h2>
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function ($locale) {</span>
+<span class="x">    $formatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);</span>
+<span class="x">    yield [&#39;default&#39;, $formatter-&gt;format(123456789.0123456)];</span>
+<span class="x">    $formatter-&gt;setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, 4);</span>
+<span class="x">    yield [&#39;MAX_FRACTION_DIGITS&#39;, $formatter-&gt;format(123456789.0123456)];</span>
+<span class="x">}, $locales);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-blue-fg">cs_CZ</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">default: 123 456 789,012</span>&#34;,
+    &#34;<span class="ansi-green-fg">MAX_FRACTION_DIGITS: 123 456 789,0123</span>&#34;,
+  ],
+  &#34;<span class="ansi-blue-fg">ja_JP</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">default: 123,456,789.012</span>&#34;,
+    &#34;<span class="ansi-green-fg">MAX_FRACTION_DIGITS: 123,456,789.0123</span>&#34;,
+  ],
 ]</pre>
 </div>
 
@@ -12001,13 +12206,13 @@ a.anchor-link {
 </div><div class="fragment">
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-PHP"><pre><span></span><span class="x">$csCollator = new Collator(&#39;cs_CZ&#39;);</span>
-<span class="x">$csCollator-&gt;sort($birds);</span>
-
-<span class="x">$birds;</span>
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function ($locale) {</span>
+<span class="x">    $formatter = new NumberFormatter($locale, NumberFormatter::SPELLOUT);</span>
+<span class="x">    yield [null, $formatter-&gt;format(123456)];</span>
+<span class="x">}, $locales);</span>
 </pre></div>
 
 </div>
@@ -12020,20 +12225,157 @@ a.anchor-link {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[7]:</div>
+<div class="prompt output_prompt">Out[15]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
 <pre>[
-  &#34;<span class="ansi-green-fg">cetie</span>&#34;,
-  &#34;<span class="ansi-green-fg">čáp</span>&#34;,
-  &#34;<span class="ansi-green-fg">čížek</span>&#34;,
-  &#34;<span class="ansi-green-fg">datel</span>&#34;,
-  &#34;<span class="ansi-green-fg">chřástal</span>&#34;,
-  &#34;<span class="ansi-green-fg">ťuhýk</span>&#34;,
-  &#34;<span class="ansi-green-fg">turpan</span>&#34;,
+  &#34;<span class="ansi-blue-fg">cs_CZ</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">sto dvacet tři tisíc čtyři sta padesát šest</span>&#34;,
+  ],
+  &#34;<span class="ansi-blue-fg">ja_JP</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">十二万三千四百五十六</span>&#34;,
+  ],
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function ($locale) {</span>
+<span class="x">    $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);</span>
+<span class="x">    yield [null, $formatter-&gt;format(1234.5678)];</span>
+<span class="x">}, $locales);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-blue-fg">cs_CZ</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">1 234,57 Kč</span>&#34;,
+  ],
+  &#34;<span class="ansi-blue-fg">ja_JP</span>&#34; =&gt; [
+    &#34;<span class="ansi-green-fg">￥1,235</span>&#34;,
+  ],
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Collator">Collator<a class="anchor-link" href="#Collator">&#182;</a></h2>
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $birds = [&#39;chřástal&#39;, &#39;čížek&#39;, &#39;ťuhýk&#39;, &#39;datel&#39;, &#39;čáp&#39;, &#39;turpan&#39;, &#39;cetie&#39;];</span>
+
+<span class="x">    sort($birds);</span>
+<span class="x">    yield [&#39;sort&#39;, $birds];</span>
+<span class="x">    </span>
+<span class="x">    $collator = new Collator(&#39;cs_CZ&#39;);</span>
+<span class="x">    $collator-&gt;sort($birds);</span>
+
+<span class="x">    yield [&#39;Collator#sort&#39;, $birds];</span>
+<span class="x">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-green-fg">sort: cetie, chřástal, datel, turpan, čáp, čížek, ťuhýk</span>&#34;,
+  &#34;<span class="ansi-green-fg">Collator#sort: cetie, čáp, čížek, datel, chřástal, ťuhýk, turpan</span>&#34;,
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $words = [&#39;šarka&#39;, &#39;šąla&#39;, &#39;itin&#39;, &#39;ypač&#39;, &#39;suolas&#39;, &#39;ilgas&#39;];</span>
+<span class="x">    $collator = new Collator(&#39;lt_LT&#39;);</span>
+<span class="x">    $collator-&gt;sort($words);</span>
+<span class="x">    </span>
+<span class="x">    yield [null, $words];</span>
+<span class="x">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-green-fg">ilgas, ypač, itin, suolas, šąla, šarka</span>&#34;,
 ]</pre>
 </div>
 
@@ -12078,11 +12420,14 @@ a.anchor-link {
 </aside></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-PHP"><pre><span></span><span class="x">$appleCount = 4;</span>
-<span class="x">&quot;Měla babka $appleCount jablka.&quot;;</span>
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function() {</span>
+<span class="x">    foreach ($counts = [5, 1.1] as $count) {</span>
+<span class="x">        yield [&quot;{$count}&quot;, &quot;Měla babka $count jablek.&quot;];</span>
+<span class="x">    }</span>
+<span class="x">});</span>
 </pre></div>
 
 </div>
@@ -12095,13 +12440,16 @@ a.anchor-link {
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[5]:</div>
+<div class="prompt output_prompt">Out[7]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#34;<span class="ansi-green-fg">Měla babka 4 jablka.</span>&#34;</pre>
+<pre>[
+  &#34;<span class="ansi-green-fg">5: Měla babka 5 jablek.</span>&#34;,
+  &#34;<span class="ansi-green-fg">1.1: Měla babka 1.1 jablek.</span>&#34;,
+]</pre>
 </div>
 
 </div>
@@ -12109,59 +12457,24 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="fragment">
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-PHP"><pre><span></span><span class="x">$appleCount = 5.5;</span>
-<span class="x">&quot;Měla babka $appleCount jablka.&quot;;</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-<div class="prompt output_prompt">Out[6]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#34;<span class="ansi-green-fg">Měla babka 5.5 jablka.</span>&#34;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div></div></section><section>
+</div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-PHP"><pre><span></span><span class="x">$countPattern = &#39;Měla babka {apple_count, number} {apple_count, plural, one {jablko} &#39;  .</span>
-<span class="x">                                                                            &#39;few {jablka} &#39; . </span>
-<span class="x">                                                                            &#39;many {jablka} &#39; .</span>
-<span class="x">                                                                            &#39;other {jablek}}.&#39;;</span>
-<span class="x">$countCsFormatter = new MessageFormatter(&#39;cs_CZ&#39;, $countPattern);</span>
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $pattern = &#39;Měla babka {count, number} {count, plural, one {jablko} &#39;  .</span>
+<span class="x">                                                               &#39;few {jablka} &#39; . </span>
+<span class="x">                                                               &#39;many {jablka} &#39; .</span>
+<span class="x">                                                               &#39;other {jablek}}.&#39;;</span>
+<span class="x">    $formatter = new MessageFormatter(&#39;cs_CZ&#39;, $pattern);</span>
 
-<span class="x">$appleCounts = [1, 4, 5, 5.5, 0];</span>
-<span class="x">$messages = [];</span>
-<span class="x">foreach($appleCounts as $appleCount) {</span>
-<span class="x">    $messages[] = $countCsFormatter-&gt;format([&#39;apple_count&#39; =&gt; $appleCount]);</span>
-<span class="x">}</span>
-
-<span class="x">$messages;</span>
+<span class="x">    $counts = [1, 4, 5, 5.5, 0];</span>
+<span class="x">    foreach ($counts as $count) {</span>
+<span class="x">        yield [&quot;{$count}&quot;, $formatter-&gt;format([&#39;count&#39; =&gt; $count])];</span>
+<span class="x">    }</span>
+<span class="x">});</span>
 </pre></div>
 
 </div>
@@ -12181,11 +12494,11 @@ a.anchor-link {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>[
-  &#34;<span class="ansi-green-fg">Měla babka 1 jablko.</span>&#34;,
-  &#34;<span class="ansi-green-fg">Měla babka 4 jablka.</span>&#34;,
-  &#34;<span class="ansi-green-fg">Měla babka 5 jablek.</span>&#34;,
-  &#34;<span class="ansi-green-fg">Měla babka 5,5 jablka.</span>&#34;,
-  &#34;<span class="ansi-green-fg">Měla babka 0 jablek.</span>&#34;,
+  &#34;<span class="ansi-green-fg">1: Měla babka 1 jablko.</span>&#34;,
+  &#34;<span class="ansi-green-fg">4: Měla babka 4 jablka.</span>&#34;,
+  &#34;<span class="ansi-green-fg">5: Měla babka 5 jablek.</span>&#34;,
+  &#34;<span class="ansi-green-fg">5.5: Měla babka 5,5 jablka.</span>&#34;,
+  &#34;<span class="ansi-green-fg">0: Měla babka 0 jablek.</span>&#34;,
 ]</pre>
 </div>
 
@@ -12194,26 +12507,252 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="fragment">
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function() {</span>
+<span class="x">    $pattern = &#39;{gender, select, m {{subject} měl jablka.} &#39; .</span>
+<span class="x">                                &#39;f {{subject} měla jablka.} &#39; .</span>
+<span class="x">                                &#39;n {{subject} mělo jablka.} &#39; .</span>
+<span class="x">                                &#39;other {{subject} si nezaslouží jablka.}}&#39;;</span>
+<span class="x">    $formatter = new MessageFormatter(&#39;cs_CZ&#39;, $pattern);</span>
+
+<span class="x">    $examples = [[&#39;subject&#39; =&gt; &#39;Dědek&#39;, &#39;gender&#39; =&gt; &#39;m&#39;],</span>
+<span class="x">                 [&#39;subject&#39; =&gt; &#39;Babka&#39;, &#39;gender&#39; =&gt; &#39;f&#39;],</span>
+<span class="x">                 [&#39;subject&#39; =&gt; &#39;Vnouče&#39;, &#39;gender&#39; =&gt; &#39;n&#39;]];</span>
+<span class="x">    foreach ($examples as $example) {</span>
+<span class="x">        yield [$example, $formatter-&gt;format($example)];</span>
+<span class="x">    }</span>
+<span class="x">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-green-fg">Dědek, m: Dědek měl jablka.</span>&#34;,
+  &#34;<span class="ansi-green-fg">Babka, f: Babka měla jablka.</span>&#34;,
+  &#34;<span class="ansi-green-fg">Vnouče, n: Vnouče mělo jablka.</span>&#34;,
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Normalizer">Normalizer<a class="anchor-link" href="#Normalizer">&#182;</a></h2>
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $original = &#39;k&#39; . &#39;u&#39; . &#39;̊&#39; . &#39;n&#39; . &#39;̌&#39;;</span>
+<span class="x">    yield [&#39;original&#39;, $original];</span>
+<span class="x">    yield [&#39;original mb_strlen&#39;, mb_strlen($original)];</span>
+<span class="x">    yield [&#39;original Normalizer::isNormalized&#39;, Normalizer::isNormalized($original)];</span>
+
+<span class="x">    $normalized = Normalizer::normalize($original);</span>
+<span class="x">    </span>
+<span class="x">    yield [&#39;normalized&#39;, $normalized];</span>
+<span class="x">    yield [&#39;normalized mb_strlen&#39;, mb_strlen($normalized)];</span>
+<span class="x">    yield [&#39;normalized Normalizer::isNormalized&#39;, Normalizer::isNormalized($normalized)];</span>
+<span class="x">    </span>
+<span class="x">    yield [&#39;==&#39;, $original == $normalized];</span>
+<span class="x">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-green-fg">original: kůň</span>&#34;,
+  &#34;<span class="ansi-green-fg">original mb_strlen: 5</span>&#34;,
+  &#34;<span class="ansi-green-fg">original Normalizer::isNormalized: false</span>&#34;,
+  &#34;<span class="ansi-green-fg">normalized: kůň</span>&#34;,
+  &#34;<span class="ansi-green-fg">normalized mb_strlen: 3</span>&#34;,
+  &#34;<span class="ansi-green-fg">normalized Normalizer::isNormalized: true</span>&#34;,
+  &#34;<span class="ansi-green-fg">==: false</span>&#34;,
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div><aside class="notes">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Narazil jsem na chybu v jádře Ruby: při vytvoření souboru na souborovém systému HFS souborový systém název souboru normalizuje, když se předá nenormalizovaný. Ruby si ale ponechalo původní nenormalizovaný název, pod kterým zapsaný soubor nebylo možné nalézt.</p>
+
+</div>
+</div>
+</div>
+</aside></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Transliterate">Transliterate<a class="anchor-link" href="#Transliterate">&#182;</a></h2>
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[101]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $ids = [&#39;uk-uk_Latn/BGN&#39;, &#39;ru-ru_Latn/BGN&#39;];</span>
+<span class="x">    foreach ($ids as $id) {</span>
+<span class="x">        $transliterator = Transliterator::create($id);</span>
+<span class="x">        yield [$id, $transliterator-&gt;transliterate(&#39;Луганск&#39;)];</span>
+<span class="x">    }</span>
+
+<span class="x">    $ids = [&#39;Upper&#39;, &#39;tr-Upper&#39;];</span>
+<span class="x">    foreach ($ids as $id) {</span>
+<span class="x">        $transliterator = Transliterator::create($id);</span>
+<span class="x">        yield [$id, $transliterator-&gt;transliterate(&#39;binbir&#39;)];</span>
+<span class="x">    }</span>
+<span class="x">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[101]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-green-fg">uk-uk_Latn/BGN: Luhansk</span>&#34;,
+  &#34;<span class="ansi-green-fg">ru-ru_Latn/BGN: Lugansk</span>&#34;,
+  &#34;<span class="ansi-green-fg">Upper: BINBIR</span>&#34;,
+  &#34;<span class="ansi-green-fg">tr-Upper: BİNBİR</span>&#34;,
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="IntlChar">IntlChar<a class="anchor-link" href="#IntlChar">&#182;</a></h2>
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $chars = [&#39;ň&#39;, &#39;℃&#39;, &#39;ふ&#39;, &#39;갨&#39;, &#39;🍺&#39;];</span>
+<span class="x">    foreach ($chars as $char) {</span>
+<span class="x">        yield [$char, IntlChar::charname($char)];</span>
+<span class="x">    }</span>
+<span class="x">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-green-fg">ň: LATIN SMALL LETTER N WITH CARON</span>&#34;,
+  &#34;<span class="ansi-green-fg">℃: DEGREE CELSIUS</span>&#34;,
+  &#34;<span class="ansi-green-fg">ふ: HIRAGANA LETTER HU</span>&#34;,
+  &#34;<span class="ansi-green-fg">갨: HANGUL SYLLABLE GAELS</span>&#34;,
+  &#34;<span class="ansi-green-fg">🍺: BEER MUG</span>&#34;,
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-PHP"><pre><span></span><span class="x">$genderPattern = &#39;{gender, select, m {{subject} měl jablka.} &#39; .</span>
-<span class="x">                                  &#39;f {{subject} měla jablka.} &#39; .</span>
-<span class="x">                                  &#39;n {{subject} mělo jablka.} &#39; .</span>
-<span class="x">                                  &#39;other {{subject} si nezaslouží jablka.}}&#39;;</span>
-<span class="x">$genderCsFormatter = new MessageFormatter(&#39;cs_CZ&#39;, $genderPattern);</span>
-
-<span class="x">$examples = [[&#39;subject&#39; =&gt; &#39;Dědek&#39;, &#39;gender&#39; =&gt; &#39;m&#39;],</span>
-<span class="x">             [&#39;subject&#39; =&gt; &#39;Babka&#39;, &#39;gender&#39; =&gt; &#39;f&#39;],</span>
-<span class="x">             [&#39;subject&#39; =&gt; &#39;Vnouče&#39;, &#39;gender&#39; =&gt; &#39;n&#39;]];</span>
-<span class="x">$messages = [];</span>
-<span class="x">foreach($examples as $example) {</span>
-<span class="x">    $messages[] = $genderCsFormatter-&gt;format($example);</span>
-<span class="x">}</span>
-<span class="x">$messages;</span>
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $chars = [&#39;Ň&#39;, &#39;ň&#39;, &#39;🍺&#39;];</span>
+<span class="x">    foreach ($chars as $char) {</span>
+<span class="x">        yield [&quot;{$char} islower&quot;, IntlChar::islower($char)];</span>
+<span class="x">        yield [&quot;{$char} isgraph&quot;, IntlChar::isgraph($char)];</span>
+<span class="x">    }</span>
+<span class="x">});</span>
 </pre></div>
 
 </div>
@@ -12233,9 +12772,56 @@ a.anchor-link {
 
 <div class="output_text output_subarea output_execute_result">
 <pre>[
-  &#34;<span class="ansi-green-fg">Dědek měl jablka.</span>&#34;,
-  &#34;<span class="ansi-green-fg">Babka měla jablka.</span>&#34;,
-  &#34;<span class="ansi-green-fg">Vnouče mělo jablka.</span>&#34;,
+  &#34;<span class="ansi-green-fg">Ň islower: false</span>&#34;,
+  &#34;<span class="ansi-green-fg">Ň isgraph: true</span>&#34;,
+  &#34;<span class="ansi-green-fg">ň islower: true</span>&#34;,
+  &#34;<span class="ansi-green-fg">ň isgraph: true</span>&#34;,
+  &#34;<span class="ansi-green-fg">🍺 islower: false</span>&#34;,
+  &#34;<span class="ansi-green-fg">🍺 isgraph: true</span>&#34;,
+]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div><div class="fragment">
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-PHP"><pre><span></span><span class="x">out(function () {</span>
+<span class="x">    $char = &#39; &#39;;</span>
+<span class="x">    $trimmed = trim($char);</span>
+<span class="x">    </span>
+<span class="x">    yield [&#39;mb_strlen&#39;, mb_strlen($trimmed)];</span>
+<span class="x">    yield [&#39;IntlChar::isWhiteSpace&#39;, IntlChar::isWhiteSpace($char)];</span>
+<span class="x">    yield [&#39;IntlChar::isUWhiteSpace&#39;, IntlChar::isUWhiteSpace($char)];</span>
+<span class="x">});</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[13]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[
+  &#34;<span class="ansi-green-fg">mb_strlen: 1</span>&#34;,
+  &#34;<span class="ansi-green-fg">IntlChar::isWhiteSpace: false</span>&#34;,
+  &#34;<span class="ansi-green-fg">IntlChar::isUWhiteSpace: true</span>&#34;,
 ]</pre>
 </div>
 
@@ -12249,39 +12835,7 @@ a.anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="&#268;&#237;seln&#233;-form&#225;ty">&#268;&#237;seln&#233; form&#225;ty<a class="anchor-link" href="#&#268;&#237;seln&#233;-form&#225;ty">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Datum-a-&#269;as">Datum a &#269;as<a class="anchor-link" href="#Datum-a-&#269;as">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="P&#345;episy">P&#345;episy<a class="anchor-link" href="#P&#345;episy">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Normalizace,-porovn&#225;v&#225;n&#237;,-p&#345;evody">Normalizace, porovn&#225;v&#225;n&#237;, p&#345;evody<a class="anchor-link" href="#Normalizace,-porovn&#225;v&#225;n&#237;,-p&#345;evody">&#182;</a></h2>
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="CIDR?-Po&#269;ty-slov?-&#8230;">CIDR? Po&#269;ty slov? &#8230;<a class="anchor-link" href="#CIDR?-Po&#269;ty-slov?-&#8230;">&#182;</a></h2>
+<h1 id="&#129500;&#127999;&#8205;&#9794;&#65039;">&#129500;&#127999;&#8205;&#9794;&#65039;<a class="anchor-link" href="#&#129500;&#127999;&#8205;&#9794;&#65039;">&#182;</a></h1>
 </div>
 </div>
 </div></section></section>
