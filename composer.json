@@ -1,0 +1,15 @@
+{
+    "name": "glutexo/icu-prednaska",
+    "description": "Přednáška o knihovně ICU pro Developer Day 2018",
+    "type": "project",
+    "require": {
+        "twbs/bootstrap": "^4.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Glutexo",
+            "email": "glutexo@icloud.com"
+        }
+    ]
+}
